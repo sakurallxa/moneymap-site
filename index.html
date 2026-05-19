@@ -1,0 +1,357 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>钱袋 · 把你的钱装一起</title>
+<meta name="description" content="钱袋是一款本地优先的个人资产记账 App。把现金、基金、股票、黄金、定投装在同一个口袋里,一眼看到全部资产 + 今日盈亏。" />
+<style>
+  :root {
+    --bg: #F2EDE4;
+    --paper: #FFFFFF;
+    --ink-1: #2A1E12;
+    --ink-2: rgba(60,40,20,0.62);
+    --ink-3: rgba(60,40,20,0.42);
+    --bronze: #C8956D;
+    --bronze-dark: #A67849;
+    --cream: #FBEFD2;
+    --hero-1: #16140F;
+    --hero-2: #221A11;
+    --hero-3: #2E2117;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--ink-1);
+    font-family: "Songti SC", "Source Han Serif SC", "Noto Serif SC", serif;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+  .mono { font-family: -apple-system, "SF Pro Text", system-ui, sans-serif; }
+
+  /* ─── HERO ────────────────────────────────── */
+  .hero {
+    background: linear-gradient(135deg, var(--hero-1), var(--hero-2) 50%, var(--hero-3));
+    color: #fff;
+    padding: 80px 24px 70px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 85% 15%, rgba(200,149,109,0.32), transparent 45%),
+      radial-gradient(circle at 14% 88%, rgba(251,239,210,0.10), transparent 38%);
+    pointer-events: none;
+  }
+  .hero-inner {
+    position: relative;
+    max-width: 720px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .logo {
+    width: 110px;
+    height: 110px;
+    border-radius: 24px;
+    margin: 0 auto 24px;
+    background: linear-gradient(135deg, var(--bronze), var(--bronze-dark));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 18px 40px rgba(200,149,109,0.45);
+  }
+  .logo-yen {
+    font-size: 64px;
+    font-weight: 900;
+    color: var(--cream);
+    line-height: 1;
+    font-family: "SF Pro Rounded", -apple-system, sans-serif;
+    letter-spacing: -2px;
+  }
+  h1 {
+    font-size: 52px;
+    font-weight: 900;
+    margin: 0 0 14px;
+    letter-spacing: -1.5px;
+    background: linear-gradient(135deg, #FBEFD2 0%, #EAD09A 45%, #C8956D 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .tagline {
+    font-size: 18px;
+    color: rgba(255,255,255,0.7);
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+  }
+  .sub {
+    font-size: 14px;
+    color: rgba(255,255,255,0.45);
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+  }
+  .hairline {
+    height: 0.6px;
+    background: linear-gradient(90deg, transparent 0%,
+      rgba(200,149,109,0.55) 25%, rgba(251,239,210,0.85) 50%,
+      rgba(200,149,109,0.55) 75%, transparent 100%);
+    margin: 30px auto;
+    max-width: 280px;
+  }
+  .meta-row {
+    margin-top: 26px;
+    display: inline-flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(200,149,109,0.16);
+    border: 0.6px solid rgba(200,149,109,0.32);
+    color: rgba(251,239,210,0.88);
+    padding: 7px 14px;
+    border-radius: 999px;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+  }
+  .chip-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--cream), var(--bronze));
+  }
+
+  /* ─── SECTION ─────────────────────────────── */
+  section { padding: 60px 24px; }
+  .container { max-width: 760px; margin: 0 auto; }
+  h2 {
+    font-size: 26px;
+    font-weight: 700;
+    margin: 0 0 24px;
+    letter-spacing: -0.3px;
+    color: var(--ink-1);
+  }
+  .eyebrow {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    color: var(--bronze-dark);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  p { color: var(--ink-1); font-size: 15px; }
+  p.muted { color: var(--ink-2); }
+
+  /* ─── FEATURE CARDS ───────────────────────── */
+  .features {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+    margin-top: 12px;
+  }
+  @media (max-width: 600px) {
+    .features { grid-template-columns: 1fr; }
+  }
+  .feat {
+    background: var(--paper);
+    border-radius: 18px;
+    padding: 20px 22px;
+    box-shadow: 0 4px 14px rgba(60,40,20,0.05);
+    border: 0.5px solid rgba(200,149,109,0.18);
+  }
+  .feat h3 {
+    margin: 0 0 6px;
+    font-size: 16px;
+    font-weight: 700;
+  }
+  .feat p {
+    margin: 0;
+    font-size: 13px;
+    color: var(--ink-2);
+    line-height: 1.7;
+  }
+
+  /* ─── SCREENSHOTS ─────────────────────────── */
+  .shots {
+    background: linear-gradient(180deg, transparent 0%, rgba(200,149,109,0.06) 100%);
+  }
+  .shots-grid {
+    display: flex;
+    gap: 16px;
+    overflow-x: auto;
+    padding: 8px 0 28px;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+  }
+  .shots-grid img {
+    flex: 0 0 auto;
+    width: 240px;
+    height: auto;
+    border-radius: 22px;
+    box-shadow: 0 12px 30px rgba(60,40,20,0.18);
+    scroll-snap-align: start;
+    border: 0.5px solid rgba(200,149,109,0.2);
+  }
+
+  /* ─── PRIVACY CARD ────────────────────────── */
+  .privacy-card {
+    background: var(--paper);
+    border-radius: 22px;
+    padding: 32px 28px;
+    box-shadow: 0 6px 20px rgba(60,40,20,0.06);
+    border: 0.5px solid rgba(200,149,109,0.18);
+    text-align: center;
+  }
+  .privacy-card .icon {
+    width: 56px;
+    height: 56px;
+    margin: 0 auto 14px;
+    border-radius: 14px;
+    background: rgba(200,149,109,0.14);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--bronze-dark);
+    font-size: 28px;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 18px;
+    padding: 12px 24px;
+    background: linear-gradient(135deg, var(--bronze), var(--bronze-dark));
+    color: #fff;
+    text-decoration: none;
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    box-shadow: 0 8px 18px rgba(200,149,109,0.35);
+    transition: transform 0.15s;
+  }
+  .btn:hover { transform: translateY(-1px); }
+
+  /* ─── FOOTER ──────────────────────────────── */
+  footer {
+    text-align: center;
+    color: var(--ink-3);
+    font-size: 12px;
+    padding: 32px 16px 48px;
+  }
+  footer a { color: var(--bronze-dark); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="logo"><div class="logo-yen">¥</div></div>
+    <h1>钱袋</h1>
+    <div class="tagline">把你的钱装一起</div>
+    <div class="sub">MoneyMap · 个人资产记账 · 本地优先</div>
+
+    <div class="hairline"></div>
+
+    <p class="muted" style="color:rgba(255,255,255,0.62);font-size:15px;max-width:520px;margin:0 auto;line-height:1.85;">
+      把现金、基金、A 股、港股、美股、黄金、定投装在同一个口袋里。<br/>
+      一眼看到全部资产 + 今日盈亏,不需要打开 N 个 App。
+    </p>
+
+    <div class="meta-row">
+      <span class="chip"><span class="chip-dot"></span>iOS 17+</span>
+      <span class="chip"><span class="chip-dot"></span>本地优先</span>
+      <span class="chip"><span class="chip-dot"></span>无追踪</span>
+      <span class="chip"><span class="chip-dot"></span>Face ID 锁</span>
+    </div>
+  </div>
+</div>
+
+<!-- FEATURES -->
+<section>
+  <div class="container">
+    <div class="eyebrow">核心功能</div>
+    <h2>多渠道资产,一个口袋</h2>
+
+    <div class="features">
+      <div class="feat">
+        <h3>多账户多币种</h3>
+        <p>现金 / 货币基金 / 基金 App / 券商(A/港/美)/ 黄金,按 CNY / HKD / USD 自动汇率换算。</p>
+      </div>
+      <div class="feat">
+        <h3>行情自动同步</h3>
+        <p>天天 / 蛋卷基金净值,新浪 / 雅虎股票汇率,上海黄金交易所现货。下拉刷新。</p>
+      </div>
+      <div class="feat">
+        <h3>定投计划</h3>
+        <p>每天 / 周 / 两周 / 月扣款,T+1 自动确认,手续费率自动计入持仓成本。</p>
+      </div>
+      <div class="feat">
+        <h3>再平衡建议</h3>
+        <p>设置目标配置,系统计算偏离度,一键预填"该买多少 / 该卖多少"。</p>
+      </div>
+      <div class="feat">
+        <h3>主屏 Widget</h3>
+        <p>黑金渐变小 / 中尺寸 Widget,总资产 + 今日盈亏一眼可见。</p>
+      </div>
+      <div class="feat">
+        <h3>Face ID 入口锁</h3>
+        <p>启动 + 后台回来需验证身份,防止他人翻看你的资产。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SCREENSHOTS -->
+<section class="shots">
+  <div class="container">
+    <div class="eyebrow">界面</div>
+    <h2>设计语言</h2>
+    <p class="muted" style="margin-bottom:24px">铜金 + 暖米色 + 黑金 Hero,思源宋体,红涨绿跌。</p>
+
+    <div class="shots-grid">
+      <img src="screenshots/01-Dashboard.png" alt="Dashboard" />
+      <img src="screenshots/02-Accounts.png" alt="Accounts" />
+      <img src="screenshots/03-AccountDetail.png" alt="Account Detail" />
+      <img src="screenshots/04-NewTransaction.png" alt="New Transaction" />
+      <img src="screenshots/05-NewDCA.png" alt="New DCA" />
+      <img src="screenshots/06-Settings.png" alt="Settings" />
+    </div>
+  </div>
+</section>
+
+<!-- PRIVACY -->
+<section>
+  <div class="container">
+    <div class="privacy-card">
+      <div class="icon">🔒</div>
+      <div class="eyebrow">数据与隐私</div>
+      <h2 style="margin-bottom:10px">你的钱,你自己看</h2>
+      <p class="muted" style="max-width:480px;margin:0 auto">
+        所有资产数据存储在你设备本地。可选 iCloud 加密同步(通过你自己的 Apple ID)。<br/>
+        钱袋没有后端服务器,没有账号体系,不收集任何信息,不做任何追踪。
+      </p>
+      <a class="btn" href="privacy.html">完整隐私政策 →</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <a href="mailto:myrt.chaos@gmail.com">myrt.chaos@gmail.com</a>
+  &nbsp;·&nbsp;
+  <a href="privacy.html">隐私政策</a>
+  &nbsp;·&nbsp;
+  <a href="https://github.com/sakurallxa/moneymap-site">GitHub</a>
+  <br/><br/>
+  © 2026 钱袋 · MoneyMap
+</footer>
+
+</body>
+</html>
